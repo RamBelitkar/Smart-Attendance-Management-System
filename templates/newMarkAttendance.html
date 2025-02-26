@@ -1,0 +1,173 @@
+{% extends 'base.html' %}
+{% block title %}Attendance Verification{% endblock title %}
+
+{% block body %}
+<style>
+  body {
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    color: #f8fafc;
+    font-family: 'Geist Mono', monospace;
+  }
+
+  .modalcs {
+    width: 90%;
+    max-width: 650px;
+    background: rgba(30, 41, 59, 0.9);
+    border: 1px solid rgba(186, 248, 70, 0.1);
+    border-radius: 16px;
+    box-shadow: 0 0 20px rgba(186, 248, 70, 0.3);
+    padding: 20px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -45%);
+    z-index: 10;
+  }
+
+  .formcs {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .btn-primary {
+    background: linear-gradient(to right, #baf846, #86efac);
+    color: #0f172a;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(186, 248, 70, 0.4);
+  }
+</style>
+
+<!-- Modal Card -->
+<div class="modalcs">
+  <h4 class="text-xl font-bold text-center text-green-400 mb-4">Verify Attendance</h4>
+  
+  <div class="p-4 bg-gray-800 rounded-lg text-center shadow-md">
+    <p><strong>Date:</strong> {{ formatted_date }}</p>
+    <p><strong>Time:</strong> {{ formatted_time }}</p>
+    <p><strong>Subject:</strong> {{ subject }}</p>
+  </div>
+
+  <div class="formcs">
+    <!-- Location Verification -->
+    <div class="bg-gray-900 p-4 rounded-lg shadow-md">
+      <h4 class="text-lg font-semibold text-green-400 text-center mb-3">Verify Location</h4>
+      <iframe id="locationIframe" 
+      src="/initVerifyLocation" 
+      title="Verify Location" 
+      class="w-full rounded-md shadow-md" 
+      style="height: 250px; border: none;">
+  </iframe>
+  
+    </div>
+    
+    <!-- OTP Verification -->
+    <div class="bg-gray-900 p-4 rounded-lg shadow-md">
+      <h4 class="text-lg font-semibold text-green-400 text-center mb-3">Verify OTP</h4>
+      <p class="text-gray-300 text-center mb-2">Enter the OTP sent to your email</p>
+      
+      <form id="otpForm" class="flex justify-center space-x-2">
+        {% for _ in range(6) %}
+          <input type="text" maxlength="1" class="otp-box w-10 h-12 text-xl font-bold text-center bg-gray-700 text-white border border-green-400 rounded-md focus:ring-2 focus:ring-green-300" required>
+        {% endfor %}
+      </form>
+      <div id="otpMessages" class="text-center mt-4 text-sm"></div>
+    </div>
+
+    <button id="submitAttendance" class="btn-primary">Submit Attendance</button>
+  </div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const otpInputs = document.querySelectorAll(".otp-box");
+        const submitButton = document.getElementById("submitAttendance");
+        const otpMessages = document.getElementById("otpMessages");
+        const errorMessageBox = document.createElement("div"); // Create an error message box
+    
+        errorMessageBox.classList.add("text-center", "text-red-400", "mt-4", "text-sm");
+        submitButton.parentNode.insertBefore(errorMessageBox, submitButton.nextSibling); // Add it below the button
+    
+        otpInputs[0].focus();
+    
+        otpInputs.forEach((input, index) => {
+            input.addEventListener("input", function() {
+                if (this.value.length === 1 && index < otpInputs.length - 1) {
+                    otpInputs[index + 1].focus();
+                }
+                checkOtpCompletion();
+            });
+    
+            input.addEventListener("keydown", function(event) {
+                if (event.key === "Backspace" && this.value === "" && index > 0) {
+                    otpInputs[index - 1].focus();
+                }
+            });
+        });
+    
+        function checkOtpCompletion() {
+            const otp = Array.from(otpInputs).map(input => input.value).join("");
+            if (otp.length === otpInputs.length) {
+                verifyOtp(otp);
+            }
+        }
+    
+        function verifyOtp(otp) {
+            fetch("/verify_otp", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ otp: otp, subject: "{{ subject }}" })
+            })
+            .then(response => response.json())
+            .then(data => {
+                otpMessages.textContent = data.message;
+                otpMessages.classList.remove("text-red-400", "text-green-400");
+                otpMessages.classList.add(data.status === "success" ? "text-green-400" : "text-red-400");
+    
+                if (data.status === "success") {
+                    otpInputs.forEach(input => input.disabled = true);
+                }
+            });
+        }
+    
+        // Function to submit attendance
+        submitButton.addEventListener("click", function() {
+            const formattedDate = "{{ formatted_date }}";
+            const formattedTime = "{{ formatted_time }}";
+            const subject = "{{ subject }}";
+    
+            fetch("/submit_user_attendance", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    formatted_date: formattedDate,
+                    formatted_time: formattedTime,
+                    subject: subject
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === "success") {
+                    window.location.href = "/home"; // Redirect to home page on success
+                } else {
+                    errorMessageBox.textContent = data.message; // Show error message below button
+                }
+            })
+            .catch(error => {
+                errorMessageBox.textContent = "An error occurred. Please try again.";
+            });
+        });
+    });
+    </script>
+    
+    
+    
+{% endblock body %}
