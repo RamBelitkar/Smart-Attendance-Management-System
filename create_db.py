@@ -55,24 +55,24 @@ with app.app_context():
             db.session.commit()
 
             map1 = TeacherMap(
-                teacherName = "sssonawane",
-                subject = 'EST'
+                teacherName = "S.S.Sonawane",
+                subject = 'WMN'
             )
             map2 = TeacherMap(
-                teacherName = "vrpalandurkar",
-                subject = 'CSS'
+                teacherName = "V.R.Palandurkar",
+                subject = 'MAD'
             )
             map3 = TeacherMap(
-                teacherName = "askhandagale",
-                subject = 'OSY'
+                teacherName = "A.B.Dodake",
+                subject = 'MGT'
             )
             map4 = TeacherMap(
-                teacherName = "vvshetkar",
+                teacherName = "V.V.Shetkar",
                 subject = 'EDE'
             )
             map5 = TeacherMap(
-                teacherName = "rbgurav",
-                subject = 'DMA'
+                teacherName = "R.B.Gurav",
+                subject = 'NIS'
             )
             # Insert student data
             db.session.add(map1)
