@@ -1,92 +1,96 @@
-# 🎓 Smart Attendance Management System
+# 🔐 Location & OTP Authentication System
 
-## 🌟 Project Overview
+## 🌟 Project Highlights
 
-A comprehensive Flask-based web application designed to streamline attendance tracking for educational institutions, featuring advanced location verification, OTP-based authentication, and real-time attendance marking.
+![Security Badge](https://img.shields.io/badge/Security-Enhanced-green)
+![Python](https://img.shields.io/badge/Python-3.8+-blue)
+![Flask](https://img.shields.io/badge/Flask-Framework-red)
 
-## ✨ Key Features
+### 🚀 Advanced Two-Factor Authentication Solution
 
-### 🔐 Authentication
-- Secure login system with role-based access control
-- User authentication using Flask-Login
-- Password encryption with Flask-Bcrypt
+Revolutionize your authentication approach with a cutting-edge system that combines **geographic intelligence** and **dynamic password verification**. 
 
-### 📍 Location Verification
-- Geolocation-based attendance marking
-- Ensures students are within campus premises
-- Uses geodesic distance calculation
+## 📡 Key Features
 
-### 🔢 OTP Verification
-- One-Time Password (OTP) generation
-- Email and SMS-based OTP delivery
-- Time-limited OTP validation
+- **🌍 Intelligent Location Tracking**
+  Restrict access based on predefined geographic boundaries, adding an unprecedented layer of security.
 
-### 📊 Attendance Tracking
-- Support for lecture and practical batch attendance
-- Real-time attendance record generation
-- Comprehensive attendance views for students and administrators
+- **🔢 Dynamic One-Time Password (OTP)**
+  Generate time-sensitive, unique passwords that expire after single use, dramatically reducing unauthorized access risks.
 
-## 🛠 Tech Stack
+- **💾 Robust Database Management**
+  Seamlessly integrate user credentials and authentication logs using SQLite's efficient storage mechanism.
 
-- **Backend**: Flask
-- **Database**: SQLAlchemy with SQLite
-- **Authentication**: Flask-Login, Flask-Bcrypt
-- **Email**: Flask-Mail
-- **SMS**: Twilio
-- **Geolocation**: GeoPy
+## 🗂️ Project Architecture
 
-## 🚀 Installation
+```
+location-and-otp-based-authentication/
+│
+├── 🌐 api_call/       # API interaction module
+├── 🖥️ templates/      # Web interface designs
+├── 💾 instance/       # Configuration files
+├── 📊 static/         # CSS, JavaScript resources
+│
+├── 🚀 app.py          # Flask application core
+├── 🔐 create_db.py    # Database initialization
+└── 📋 requirements.txt # Project dependencies
+```
+
+## 🛠️ Quick Setup
 
 ### Prerequisites
 - Python 3.8+
-- pip
+- pip package manager
 
-### Setup Steps
-```bash
-# Clone the repository
-git clone https://github.com/your-username/attendance-management-system.git
+### Installation Steps
 
-# Navigate to project directory
-cd attendance-management-system
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/ShreyashChilip/location-and-otp-based-authentication.git
+   ```
 
-# Create virtual environment
-python -m venv venv
-source venv/bin/activate  # On Windows, use `venv\Scripts\activate`
+2. **Install Dependencies**
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-# Install dependencies
-pip install -r requirements.txt
+3. **Initialize Database**
+   ```bash
+   python create_db.py
+   ```
 
-# Initialize database
-flask db upgrade
+4. **Launch Application**
+   ```bash
+   python app.py
+   ```
 
-# Run the application
-flask run
-```
+## 🔐 Authentication Workflow
 
-## 📋 Configuration
+1. User enters credentials
+2. System verifies geographic location
+3. Generate and send time-limited OTP
+4. User completes two-factor authentication
 
-1. Configure `keys.py` with:
-   - Twilio credentials
-   - SMTP email settings
-   - Location coordinates
+## 📦 Core Dependencies
 
-2. Set environment variables for sensitive information
+- **Web Framework**: Flask
+- **Database**: SQLite
+- **HTTP Requests**: Requests Library
+- **Data Handling**: Pandas
 
-## 🔒 Security Features
+## 🏆 Security Principles
 
-- Location verification within 50 meters of campus
-- OTP-based attendance marking
-- Role-based access control
-- Secure password hashing
-- Session management
+- Location-based access control
+- Time-sensitive authentication tokens
+- Comprehensive logging mechanisms
+- Secure API key management
 
-## 📱 Modules
+## 📄 Licensing
 
-- **User Authentication**
-- **Location Verification**
-- **OTP Generation**
-- **Attendance Marking**
-- **Attendance Reporting**
+Released under the **MIT License** 🆓
 
+---
 
-**Made with ❤️ & 🐍 Python-Flask**
+**Developed with ❤️ by Shreyash Chilip**
+
+*Empowering secure digital experiences*
