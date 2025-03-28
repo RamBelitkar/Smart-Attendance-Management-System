@@ -91,6 +91,4 @@ Released under the **MIT License** 🆓
 
 ---
 
-**Developed with ❤️ by Shreyash Chilip**
-
-*Empowering secure digital experiences*
+**Developed with ❤️ by Ram Belitkar**
